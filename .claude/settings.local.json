@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run dev)",
+      "Bash(npm uninstall:*)",
+      "Bash(timeout:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\n集成 LeanCloud 云存储和配对系统\n\n- 添加 leancloud-storage 依赖\n- 创建类型定义文件 \\(src/types/index.ts\\)\n- 创建 LeanCloud 初始化服务 \\(src/services/storage.ts\\)\n- 创建防抖工具函数 \\(src/utils/debounce.ts\\)\n- 创建任务数据服务 \\(src/services/taskService.ts\\)\n- 创建情绪评价服务 \\(src/services/emotionService.ts\\)\n- 创建账本服务 \\(src/services/ledgerService.ts\\)\n- 创建配对服务 \\(src/services/pairService.ts\\)\n  - 使用 UserConfig 类而非 User 类避免认证问题\n  - 支持生成6位配对码\n  - 支持创建和加入配对\n- 创建配对引导组件 \\(src/components/PairSetup.tsx\\)\n- 修改 App.tsx 添加配对状态检查和引导流程\n- 实现数据隔离：所有数据通过 pairId 过滤\n- 支持延迟同步策略（3秒防抖）\nEOF\n\\)\")"
+    ]
+  }
+}
