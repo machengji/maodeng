@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Coins, Clock, Zap, Plus, Check, X } from 'lucide-react';
-import Card from '../components/ui/Card';
+import Card, { MotionCard } from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
-import Button from '../components/ui/Button';
+import Button, { MotionButton } from '../components/ui/Button';
+import PageContainer from '../components/layout/PageContainer';
+import Icon from '../components/ui/Icon';
+import { staggerContainer, scaleIn } from '../utils/animations';
 
 interface Task {
   id: number;
@@ -103,258 +106,302 @@ const TasksPage = () => {
   const myTasks = tasks.filter(t => t.claimedBy === currentUser && !t.completed);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white p-6 sticky top-0 z-10 shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">家务任务</h1>
-        <div className="flex items-center justify-between bg-white/20 backdrop-blur-sm rounded-xl p-4">
-          <div className="text-center flex-1">
-            <div className="text-3xl font-bold">{myCoins}</div>
-            <div className="text-sm opacity-90">我的家务币</div>
+    <PageContainer 
+      title="家务任务" 
+      description="认领并完成任务，赚取家务币"
+      action={
+        <MotionButton
+          size="sm"
+          onClick={() => setShowAddTask(true)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          发布
+        </MotionButton>
+      }
+    >
+      {/* Coins Summary */}
+      <motion.div 
+        variants={scaleIn}
+        className="grid grid-cols-2 gap-4 mb-8"
+      >
+        <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-3xl p-5 text-white shadow-soft-lg overflow-hidden relative group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+            <Coins size={64} />
           </div>
-          <div className="w-px h-12 bg-white/30"></div>
-          <div className="text-center flex-1">
-            <div className="text-3xl font-bold">{partnerCoins}</div>
-            <div className="text-sm opacity-90">对方的币</div>
+          <div className="relative z-10">
+            <p className="text-primary-100 text-sm font-medium">我的家务币</p>
+            <h3 className="text-3xl font-bold mt-1">{myCoins}</h3>
           </div>
         </div>
-      </div>
+        <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-3xl p-5 text-white shadow-soft-lg overflow-hidden relative group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+            <Coins size={64} />
+          </div>
+          <div className="relative z-10">
+            <p className="text-secondary-100 text-sm font-medium">对方的币</p>
+            <h3 className="text-3xl font-bold mt-1">{partnerCoins}</h3>
+          </div>
+        </div>
+      </motion.div>
 
       {/* My Tasks */}
-      {myTasks.length > 0 && (
-        <div className="p-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">我的任务 ({myTasks.length})</h2>
-          <div className="space-y-3">
-            {myTasks.map((task) => (
-              <motion.div
-                key={task.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-              >
-                <Card variant="elevated" padding="md" className="relative">
-                  {task.urgent && (
-                    <Badge variant="danger" size="sm" pulse className="absolute -top-2 -right-2">
-                      <Zap className="w-3 h-3 mr-1" />
-                      紧急
-                    </Badge>
-                  )}
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-semibold text-gray-900">{task.title}</h4>
-                    <div className="flex items-center space-x-1 text-amber-600 font-semibold">
-                      <Coins className="w-4 h-4" />
-                      <span>{task.coins}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1 text-sm text-gray-600">
-                      <Clock className="w-4 h-4" />
-                      <span>{task.time}</span>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleCancelClaim(task.id)}
-                      >
-                        <X className="w-4 h-4 mr-1" />
-                        取消
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleCompleteTask(task.id)}
-                      >
-                        <Check className="w-4 h-4 mr-1" />
-                        完成
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Available Tasks */}
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-gray-900">
-            可认领任务 ({activeTasks.filter(t => !t.claimed).length})
-          </h2>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setShowAddTask(true)}
+      <AnimatePresence mode="popLayout">
+        {myTasks.length > 0 && (
+          <motion.div
+            key="my-tasks"
+            variants={staggerContainer}
+            className="space-y-4"
           >
-            <Plus className="w-4 h-4 mr-1" />
-            发布任务
-          </Button>
-        </div>
-
-        <div className="space-y-3">
-          <AnimatePresence>
-            {activeTasks.filter(t => !t.claimed).map((task) => (
-              <motion.div
+            <h2 className="text-lg font-bold text-gray-900 flex items-center">
+              <div className="w-1 h-6 bg-primary rounded-full mr-2" />
+              正在进行 ({myTasks.length})
+            </h2>
+            {myTasks.map((task) => (
+              <MotionCard
                 key={task.id}
                 layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                variant="elevated"
+                padding="md"
+                className="relative overflow-visible"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, x: -20 }}
               >
-                <Card variant="elevated" padding="md" className="relative">
-                  {task.urgent && (
-                    <Badge variant="danger" size="sm" pulse className="absolute -top-2 -right-2">
-                      <Zap className="w-3 h-3 mr-1" />
-                      紧急悬赏
-                    </Badge>
-                  )}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex-1">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">{task.title}</h4>
-                      <div className="text-xs text-gray-500">发布者: {task.createdBy}</div>
-                    </div>
-                    <div className="flex items-center space-x-1 text-amber-600 font-semibold text-lg">
-                      <Coins className="w-5 h-5" />
-                      <span>{task.coins}</span>
+                {task.urgent && (
+                  <Badge variant="danger" size="sm" pulse className="absolute -top-2 -right-2 shadow-sm">
+                    <Zap className="w-3 h-3 mr-1" />
+                    紧急
+                  </Badge>
+                )}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900">{task.title}</h4>
+                    <div className="flex items-center text-muted-foreground text-sm mt-1">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {task.time}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1 text-sm text-gray-600">
-                      <Clock className="w-4 h-4" />
-                      <span>{task.time}</span>
+                  <div className="text-right">
+                    <div className="flex items-center text-primary font-bold text-xl">
+                      <Coins className="w-5 h-5 mr-1" />
+                      {task.coins}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex space-x-3 mt-4">
+                  <Button
+                    variant="ghost"
+                    size="md"
+                    className="flex-1"
+                    onClick={() => handleCancelClaim(task.id)}
+                  >
+                    取消认领
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    className="flex-1"
+                    onClick={() => handleCompleteTask(task.id)}
+                  >
+                    <Check className="w-5 h-5 mr-1" />
+                    完成
+                  </Button>
+                </div>
+              </MotionCard>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Available Tasks */}
+        <motion.div
+          key="available-tasks"
+          variants={staggerContainer}
+          className="space-y-4 pt-4"
+        >
+          <h2 className="text-lg font-bold text-gray-900 flex items-center">
+            <div className="w-1 h-6 bg-secondary rounded-full mr-2" />
+            可认领 ({activeTasks.filter(t => !t.claimed).length})
+          </h2>
+          <div className="grid gap-4">
+            {activeTasks.filter(t => !t.claimed).map((task) => (
+              <MotionCard
+                key={task.id}
+                layout
+                variant="glass"
+                padding="md"
+                className="border-primary/10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                whileHover={{ y: -4, shadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <h4 className="text-lg font-bold text-gray-900">{task.title}</h4>
+                      {task.urgent && <Badge variant="danger" size="sm">紧急</Badge>}
+                    </div>
+                    <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+                      <div className="flex items-center">
+                        <Clock className="w-4 h-4 mr-1" />
+                        {task.time}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="w-1 h-1 bg-gray-300 rounded-full mx-2" />
+                        发布者: {task.createdBy}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center text-primary font-bold text-lg">
+                      <Coins className="w-4 h-4 mr-1" />
+                      {task.coins}
                     </div>
                     <Button
-                      variant={task.urgent ? 'primary' : 'outline'}
+                      variant="outline"
                       size="sm"
+                      className="mt-3 rounded-full border-primary/20 hover:bg-primary/10"
                       onClick={() => handleClaimTask(task.id)}
                     >
-                      认领任务
+                      认领
                     </Button>
                   </div>
-                </Card>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Completed Tasks */}
-      {completedTasks.length > 0 && (
-        <div className="p-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">已完成 ({completedTasks.length})</h2>
-          <div className="space-y-3">
-            {completedTasks.map((task) => (
-              <Card key={task.id} variant="flat" padding="md" className="opacity-60">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h4 className="text-base font-medium text-gray-700 line-through">{task.title}</h4>
-                    <div className="text-xs text-gray-500 mt-1">完成者: {task.claimedBy}</div>
-                  </div>
-                  <Badge variant="success" size="sm">
-                    <Check className="w-3 h-3 mr-1" />
-                    已完成
-                  </Badge>
                 </div>
-              </Card>
+              </MotionCard>
             ))}
           </div>
-        </div>
-      )}
+        </motion.div>
+
+        {/* Completed Tasks */}
+        {completedTasks.length > 0 && (
+          <motion.div
+            key="completed-tasks"
+            className="space-y-4 pt-4"
+          >
+            <h2 className="text-lg font-bold text-gray-400 flex items-center">
+              <div className="w-1 h-6 bg-gray-300 rounded-full mr-2" />
+              已完成 ({completedTasks.length})
+            </h2>
+            <div className="space-y-3">
+              {completedTasks.map((task) => (
+                <Card key={task.id} variant="outlined" padding="sm" className="opacity-60 bg-gray-50/50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <Check className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-700 line-through">{task.title}</h4>
+                        <p className="text-xs text-muted-foreground">完成者: {task.claimedBy}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center text-gray-400 font-medium">
+                      <Coins className="w-4 h-4 mr-1" />
+                      {task.coins}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Add Task Modal */}
       <AnimatePresence>
         {showAddTask && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4"
-            onClick={() => setShowAddTask(false)}
-          >
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
             <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
-              className="bg-white rounded-t-3xl sm:rounded-2xl w-full max-w-md p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              onClick={() => setShowAddTask(false)}
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative bg-white rounded-t-[2.5rem] sm:rounded-3xl w-full max-w-md p-8 shadow-soft-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-4">发布新任务</h3>
+              <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mb-8 sm:hidden" />
+              <h3 className="text-2xl font-extrabold text-gray-900 mb-6">发布新任务</h3>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">任务名称</label>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-gray-700 ml-1">任务名称</label>
                   <input
                     type="text"
                     value={newTask.title}
                     onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400"
                     placeholder="例如：清洁厨房"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">预计时间</label>
-                  <input
-                    type="text"
-                    value={newTask.time}
-                    onChange={(e) => setNewTask({ ...newTask, time: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="例如：30分钟"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-700 ml-1">预计时间</label>
+                    <input
+                      type="text"
+                      value={newTask.time}
+                      onChange={(e) => setNewTask({ ...newTask, time: e.target.value })}
+                      className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all"
+                      placeholder="30分钟"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-700 ml-1">家务币奖励</label>
+                    <input
+                      type="number"
+                      value={newTask.coins}
+                      onChange={(e) => setNewTask({ ...newTask, coins: parseInt(e.target.value) || 0 })}
+                      className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-bold text-primary"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">奖励家务币</label>
-                  <input
-                    type="number"
-                    value={newTask.coins}
-                    onChange={(e) => setNewTask({ ...newTask, coins: parseInt(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    min="10"
-                    step="10"
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
+                <label className="flex items-center p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-gray-100 transition-colors">
                   <input
                     type="checkbox"
-                    id="urgent"
                     checked={newTask.urgent}
                     onChange={(e) => setNewTask({ ...newTask, urgent: e.target.checked })}
-                    className="w-5 h-5 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                    className="w-5 h-5 text-primary border-none rounded-lg focus:ring-0 focus:ring-offset-0 bg-white"
                   />
-                  <label htmlFor="urgent" className="text-sm font-medium text-gray-700">
-                    标记为紧急任务（额外奖励）
-                  </label>
-                </div>
+                  <div className="ml-3">
+                    <span className="block text-sm font-bold text-gray-900">标记为紧急</span>
+                    <span className="block text-xs text-muted-foreground italic">紧急任务将被优先显示</span>
+                  </div>
+                </label>
 
-                <div className="flex space-x-3 pt-4">
+                <div className="flex space-x-3 pt-2">
                   <Button
-                    variant="outline"
-                    size="md"
+                    variant="ghost"
+                    size="lg"
                     onClick={() => setShowAddTask(false)}
-                    className="flex-1"
+                    className="flex-1 rounded-2xl"
                   >
                     取消
                   </Button>
                   <Button
                     variant="primary"
-                    size="md"
+                    size="lg"
                     onClick={handleAddTask}
-                    className="flex-1"
+                    className="flex-1 rounded-2xl shadow-primary/20 shadow-lg"
                   >
-                    发布
+                    确认发布
                   </Button>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
-    </div>
+    </PageContainer>
   );
 };
 

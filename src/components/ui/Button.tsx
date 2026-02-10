@@ -1,39 +1,42 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', children, ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', loading, children, ...props }, ref) => {
+    const baseStyles = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]';
+    
+    const variants = {
+      primary: 'bg-primary text-white shadow-soft hover:bg-primary/90 hover:shadow-soft-lg',
+      secondary: 'bg-secondary text-white shadow-soft hover:bg-secondary/90 hover:shadow-soft-lg',
+      outline: 'border-2 border-primary text-primary hover:bg-primary/5',
+      ghost: 'hover:bg-accent hover:text-accent-foreground',
+      link: 'text-primary underline-offset-4 hover:underline px-0 py-0 h-auto',
+    };
+
+    const sizes = {
+      sm: 'h-9 px-3 text-xs',
+      md: 'h-11 px-6 text-base',
+      lg: 'h-14 px-8 text-lg',
+      icon: 'h-10 w-10',
+    };
+
     return (
       <button
         ref={ref}
-        className={clsx(
-          'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200',
-          'focus:outline-none focus:ring-2 focus:ring-offset-2',
-          'disabled:opacity-50 disabled:cursor-not-allowed',
-          {
-            // Variants
-            'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-lg hover:shadow-xl':
-              variant === 'primary',
-            'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500 shadow-lg hover:shadow-xl':
-              variant === 'secondary',
-            'border-2 border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500':
-              variant === 'outline',
-            'text-gray-700 hover:bg-gray-100 focus:ring-gray-500':
-              variant === 'ghost',
-            // Sizes
-            'px-3 py-1.5 text-sm': size === 'sm',
-            'px-6 py-3 text-base': size === 'md',
-            'px-8 py-4 text-lg': size === 'lg',
-          },
-          className
-        )}
+        className={twMerge(clsx(baseStyles, variants[variant], sizes[size], className))}
         {...props}
       >
+        {loading ? (
+          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+        ) : null}
         {children}
       </button>
     );
@@ -41,5 +44,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = 'Button';
+
+// Motion version of the button
+export const MotionButton = motion.create(Button);
 
 export default Button;

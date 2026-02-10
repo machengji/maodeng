@@ -1,120 +1,148 @@
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, Coins } from 'lucide-react';
+import { Heart, Sparkles, Coins, ArrowRight, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../ui/Button';
+import Button, { MotionButton } from '../ui/Button';
+import { fadeIn, slideUp, staggerContainer } from '../../utils/animations';
+import Icon from '../ui/Icon';
 
 const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary-50 via-white to-secondary-50">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-10 text-primary-500 opacity-20"
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[5%] text-primary/10"
+          animate={{ 
+            y: [0, -30, 0],
+            rotate: [0, 10, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Heart className="w-16 h-16" />
+          <Heart size={120} strokeWidth={1} />
         </motion.div>
         <motion.div
-          className="absolute top-40 right-20 text-secondary-500 opacity-20"
-          animate={{ y: [0, -25, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute top-[20%] right-[10%] text-secondary/10"
+          animate={{ 
+            y: [0, 40, 0],
+            rotate: [0, -15, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         >
-          <Sparkles className="w-20 h-20" />
+          <Sparkles size={160} strokeWidth={1} />
         </motion.div>
         <motion.div
-          className="absolute bottom-40 left-1/4 text-amber-500 opacity-20"
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-[15%] left-[15%] text-accent/10"
+          animate={{ 
+            y: [0, -20, 0],
+            x: [0, 20, 0],
+          }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         >
-          <Coins className="w-14 h-14" />
+          <Coins size={100} strokeWidth={1} />
         </motion.div>
+        
+        {/* Glow effects */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-200/20 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary-200/20 rounded-full blur-[100px]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="space-y-8"
         >
           {/* Badge */}
-          <motion.div
-            className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg mb-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Sparkles className="w-4 h-4 text-secondary-500" />
-            <span className="text-sm font-medium text-gray-700">智能家务协作系统</span>
+          <motion.div variants={fadeIn} className="flex justify-center">
+            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-glass border border-white/50">
+              <div className="flex -space-x-2">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-primary-200 to-secondary-200" />
+                ))}
+              </div>
+              <span className="text-sm font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                1000+ 家庭的选择
+              </span>
+            </div>
           </motion.div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+          <motion.h1 
+            variants={slideUp}
+            className="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight text-gray-900 leading-[1.1]"
+          >
             让家务成为
-            <span className="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
-              爱的游戏
+            <span className="relative inline-block ml-4">
+              <span className="relative z-10 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                爱的游戏
+              </span>
+              <motion.svg
+                viewBox="0 0 200 20"
+                className="absolute -bottom-2 left-0 w-full h-4 text-primary/20 -z-0"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+              >
+                <path d="M0,10 Q50,0 100,10 T200,10" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+              </motion.svg>
             </span>
-            <br />
-            而非争吵的导火索
-          </h1>
+          </motion.h1>
 
           {/* Subheadline */}
-          <p className="text-xl sm:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
-            用游戏化和情绪智能重建家庭和谐，让每一次家务协作都成为增进感情的机会
-          </p>
+          <motion.p 
+            variants={slideUp}
+            className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+          >
+            用游戏化和情绪智能重建家庭和谐，让每一次家务协作都成为增进感情的机会。
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary" size="lg" className="w-full sm:w-auto" onClick={() => navigate('/app/tasks')}>
-              开始我们的家务合伙之旅
-            </Button>
-            <Button variant="outline" size="lg" className="w-full sm:w-auto">
-              观看演示视频
-            </Button>
-          </div>
-
-          {/* Trust Signals */}
-          <motion.div
-            className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+          <motion.div 
+            variants={slideUp}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
           >
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>无需信用卡</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>随时取消</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>1000+ 家庭正在使用</span>
+            <MotionButton 
+              size="lg" 
+              className="w-full sm:w-auto group shadow-primary/20"
+              onClick={() => navigate('/app/tasks')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              立刻开始
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </MotionButton>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto bg-white/50 backdrop-blur-sm group"
+            >
+              <Play className="mr-2 w-5 h-5 fill-current group-hover:scale-110 transition-transform" />
+              观看演示
+            </Button>
+          </motion.div>
+
+          {/* Featured In / Social Proof */}
+          <motion.div
+            variants={fadeIn}
+            className="mt-20 pt-10 border-t border-gray-100"
+          >
+            <p className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-8">
+              深受现代家庭喜爱
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+              {/* Replace with actual logos if available */}
+              <div className="text-2xl font-bold italic">HarmonyPlus</div>
+              <div className="text-2xl font-bold italic">CoupleCare</div>
+              <div className="text-2xl font-bold italic">FamilyFirst</div>
+              <div className="text-2xl font-bold italic">LifeBalance</div>
             </div>
           </motion.div>
-        </motion.div>
-
-        {/* Hero Image/Illustration Placeholder */}
-        <motion.div
-          className="mt-16"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-        >
-          <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20">
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <Heart className="w-20 h-20 text-primary-500 mx-auto mb-4" />
-                  <p className="text-gray-600 text-lg">产品演示区域</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>
