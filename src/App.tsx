@@ -77,7 +77,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/maodeng">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/app/*" element={
