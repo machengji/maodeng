@@ -1,81 +1,77 @@
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
-import Button from './ui/Button';
+import { useNavigate } from 'react-router-dom';
+import { MotionButton } from './ui/Button';
+import { fadeIn, slideUp } from '../utils/animations';
 
 const FinalCTA = () => {
+  const navigate = useNavigate();
+
   return (
-    <section className="py-20 bg-gradient-to-br from-primary-500 via-secondary-500 to-purple-600 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
-        <motion.div
-          className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1], x: [0, 50, 0], y: [0, 30, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"
-          animate={{ scale: [1, 1.3, 1], x: [0, -40, 0], y: [0, -50, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
+    <section className="py-40 bg-gray-900 relative overflow-hidden text-center">
+      {/* Abstract Background Element */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
+        <svg width="100%" height="100%" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="500" cy="500" r="400" stroke="white" strokeWidth="1" fill="none" />
+          <circle cx="500" cy="500" r="300" stroke="white" strokeWidth="1" fill="none" />
+        </svg>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div className="max-w-4xl mx-auto px-6 relative z-10 space-y-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={fadeIn}
+          initial="initial"
+          whileInView="animate"
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          className="space-y-4"
         >
-          {/* Icon */}
-          <motion.div
-            className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6"
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Sparkles className="w-10 h-10 text-white" />
-          </motion.div>
-
-          {/* Headline */}
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            准备好改变你们的
-            <br />
-            家务关系了吗？
+          <span className="text-[10px] tracking-[0.5em] text-gray-500 uppercase">A New Beginning</span>
+          <h2 className="text-4xl md:text-6xl font-extralight text-white tracking-tight leading-tight">
+            重启你们的<br />
+            <span className="italic font-serif text-primary">居家协作哲学</span>
           </h2>
+        </motion.div>
 
-          {/* Subheadline */}
-          <p className="text-xl sm:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
-            加入1000+幸福家庭，让家务成为增进感情的机会
-          </p>
+        <motion.p 
+          variants={slideUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="text-lg text-gray-400 font-light max-w-2xl mx-auto leading-relaxed"
+        >
+          不仅是工具，更是一种生活的仪式。让每一分付出都归于平衡，让爱在纯粹中恒久。
+        </motion.p>
 
-          {/* CTA Button */}
-          <motion.div
+        <motion.div
+          variants={fadeIn}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="pt-8"
+        >
+          <MotionButton
+            size="lg"
+            className="rounded-none px-16 py-8 bg-white text-gray-900 hover:bg-primary hover:text-white transition-all duration-500 shadow-none border-none"
+            onClick={() => navigate('/app/tasks')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-white text-primary-600 hover:bg-gray-50 shadow-2xl text-xl px-12 py-5"
-            >
-              免费开始
-            </Button>
-          </motion.div>
+            开启我们的篇章
+          </MotionButton>
+        </motion.div>
 
-          {/* Trust Signals */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-white/80 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>无需信用卡</span>
+        <motion.div 
+          variants={fadeIn}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="pt-12 flex justify-center space-x-12"
+        >
+          {['无需繁琐配置', '完全私密', '永久免费'].map((item) => (
+            <div key={item} className="flex items-center space-x-2">
+              <span className="w-1 h-1 bg-primary rounded-full" />
+              <span className="text-[10px] tracking-widest text-gray-500 uppercase">{item}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>随时取消</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>30天满意保证</span>
-            </div>
-          </div>
+          ))}
         </motion.div>
       </div>
     </section>

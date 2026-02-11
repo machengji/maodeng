@@ -4,28 +4,25 @@ import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
-  size?: 'sm' | 'md' | 'lg' | 'icon';
-  loading?: boolean;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', loading, children, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]';
+  ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
+    const baseStyles = 'inline-flex items-center justify-center transition-all duration-300 font-light tracking-widest uppercase focus:outline-none';
     
     const variants = {
-      primary: 'bg-primary text-white shadow-soft hover:bg-primary/90 hover:shadow-soft-lg',
-      secondary: 'bg-secondary text-white shadow-soft hover:bg-secondary/90 hover:shadow-soft-lg',
-      outline: 'border-2 border-primary text-primary hover:bg-primary/5',
-      ghost: 'hover:bg-accent hover:text-accent-foreground',
-      link: 'text-primary underline-offset-4 hover:underline px-0 py-0 h-auto',
+      primary: 'bg-gray-900 text-white hover:bg-primary shadow-subtle',
+      secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
+      outline: 'border border-gray-200 text-gray-900 hover:border-gray-900 hover:bg-transparent',
+      ghost: 'text-gray-500 hover:text-gray-900',
     };
 
     const sizes = {
-      sm: 'h-9 px-3 text-xs',
-      md: 'h-11 px-6 text-base',
-      lg: 'h-14 px-8 text-lg',
-      icon: 'h-10 w-10',
+      sm: 'h-10 px-4 text-[10px]',
+      md: 'h-12 px-8 text-xs',
+      lg: 'h-14 px-12 text-sm',
     };
 
     return (
@@ -33,19 +30,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={twMerge(clsx(baseStyles, variants[variant], sizes[size], className))}
         {...props}
-      >
-        {loading ? (
-          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        ) : null}
-        {children}
-      </button>
+      />
     );
   }
 );
 
 Button.displayName = 'Button';
-
-// Motion version of the button
 export const MotionButton = motion.create(Button);
-
 export default Button;

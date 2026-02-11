@@ -8,15 +8,15 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { path: '/app/tasks', icon: ListTodo, label: '任务' },
-    { path: '/app/emotion', icon: Thermometer, label: '情绪' },
-    { path: '/app/ledger', icon: Scale, label: '账本' },
-    { path: '/app/reconciliation', icon: Heart, label: '和解' },
+    { path: '/app/tasks', icon: ListTodo, label: '日常任务' },
+    { path: '/app/emotion', icon: Thermometer, label: '情绪晴雨' },
+    { path: '/app/ledger', icon: Scale, label: '公平账本' },
+    { path: '/app/reconciliation', icon: Heart, label: '温情和解' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-border shadow-glass z-50 px-4 pb-safe">
-      <div className="max-w-md mx-auto flex items-center justify-around h-20">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-50 z-50">
+      <div className="max-w-lg mx-auto flex items-center justify-around h-20">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -25,39 +25,29 @@ const BottomNav = () => {
               key={item.path}
               onClick={() => navigate(item.path)}
               className={clsx(
-                'relative flex-1 flex flex-col items-center justify-center h-full transition-all duration-300',
-                isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                'relative flex-1 flex flex-col items-center justify-center h-full transition-all duration-500',
+                isActive ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'
               )}
             >
-              {isActive && (
-                <motion.div
-                  layoutId="activeNav"
-                  className="absolute inset-0 bg-primary/5 rounded-2xl -z-10"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <div className="relative">
+              <div className="relative flex flex-col items-center">
                 <Icon
-                  className={clsx(
-                    'w-6 h-6 transition-transform duration-300',
-                    isActive ? 'scale-110' : 'scale-100'
-                  )}
-                  strokeWidth={isActive ? 2.5 : 2}
+                  size={20}
+                  strokeWidth={isActive ? 1.5 : 1}
+                  className="transition-all duration-500"
                 />
+                <span className={clsx(
+                  'text-[8px] mt-2 tracking-[0.2em] font-light transition-all duration-500',
+                  isActive ? 'opacity-100' : 'opacity-0'
+                )}>
+                  {item.label}
+                </span>
                 {isActive && (
                   <motion.div
                     layoutId="activeDot"
-                    className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"
-                    transition={{ type: 'spring', bounce: 0.5, duration: 0.6 }}
+                    className="absolute -bottom-2 w-1 h-1 bg-primary rounded-full"
                   />
                 )}
               </div>
-              <span className={clsx(
-                'text-[10px] mt-1.5 font-medium transition-all duration-300',
-                isActive ? 'opacity-100 transform-none' : 'opacity-70'
-              )}>
-                {item.label}
-              </span>
             </button>
           );
         })}

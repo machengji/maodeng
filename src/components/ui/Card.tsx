@@ -4,46 +4,37 @@ import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outlined' | 'glass';
+  variant?: 'default' | 'flat' | 'outlined';
   padding?: 'none' | 'sm' | 'md' | 'lg';
-  hover?: boolean;
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = 'default', padding = 'md', hover = false, children, ...props }, ref) => {
-    const baseStyles = 'rounded-2xl transition-all duration-300 overflow-hidden';
+  ({ className, variant = 'default', padding = 'md', ...props }, ref) => {
+    const baseStyles = 'transition-all duration-500 bg-white';
     
     const variants = {
-      default: 'bg-white',
-      elevated: 'bg-white shadow-soft hover:shadow-soft-lg',
-      outlined: 'bg-white border border-border',
-      glass: 'glass-card',
+      default: 'border border-gray-100 shadow-subtle hover:shadow-art',
+      flat: 'bg-gray-50/50',
+      outlined: 'border border-gray-100',
     };
 
     const paddings = {
       none: 'p-0',
       sm: 'p-4',
-      md: 'p-6',
-      lg: 'p-8',
+      md: 'p-8',
+      lg: 'p-12',
     };
-
-    const hoverStyles = hover ? 'hover:-translate-y-1 hover:shadow-soft-xl' : '';
 
     return (
       <div
         ref={ref}
-        className={twMerge(clsx(baseStyles, variants[variant], paddings[padding], hoverStyles, className))}
+        className={twMerge(clsx(baseStyles, variants[variant], paddings[padding], className))}
         {...props}
-      >
-        {children}
-      </div>
+      />
     );
   }
 );
 
 Card.displayName = 'Card';
-
-// Motion version of the card
 export const MotionCard = motion.create(Card);
-
 export default Card;

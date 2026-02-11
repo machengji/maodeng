@@ -1,77 +1,74 @@
 import { motion } from 'framer-motion';
-import { AlertCircle, ThumbsDown, Scale } from 'lucide-react';
-import Card from './ui/Card';
+import { fadeIn, slideUp, staggerContainer } from '../utils/animations';
 
 const ProblemStatement = () => {
-  const problems = [
+  const thoughts = [
     {
-      icon: AlertCircle,
-      title: '为什么总是我做？',
-      description: '家务分配不均，总觉得自己付出更多，对方却视而不见',
-      color: 'text-red-500',
-      bgColor: 'bg-red-50',
+      label: "付出的隐身",
+      content: "为什么家中的琐碎，总是落在一人的肩头，而另一人却浑然不觉？",
     },
     {
-      icon: ThumbsDown,
-      title: '你做得不够好！',
-      description: '对家务质量不满意，但直接指责又会引发争吵',
-      color: 'text-amber-500',
-      bgColor: 'bg-amber-50',
+      label: "指责的刺痛",
+      content: "当家务变成了考核，每一句纠正都像是一场无声的审判。",
     },
     {
-      icon: Scale,
-      title: '我们需要更公平的分配',
-      description: '缺乏客观的衡量标准，难以达成真正公平的家务分工',
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-50',
-    },
+      label: "秩序的缺失",
+      content: "缺乏客观的衡量，让爱的港湾变成了计较得失的谈判桌。",
+    }
   ];
 
   return (
-    <section className="py-20 bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl sm:text-5xl font-bold text-white mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            这些场景是否似曾相识？
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-400"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            家务问题正在悄悄侵蚀你们的感情
-          </motion.p>
-        </div>
-
-        {/* Problem Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {problems.map((problem, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card variant="elevated" padding="lg" className="h-full hover:scale-105 transition-transform">
-                <div className={`w-16 h-16 ${problem.bgColor} rounded-2xl flex items-center justify-center mb-6`}>
-                  <problem.icon className={`w-8 h-8 ${problem.color}`} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{problem.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{problem.description}</p>
-              </Card>
+    <section className="py-32 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Abstract Decorative Line */}
+        <div className="absolute left-0 top-1/2 w-32 h-px bg-gray-100 hidden lg:block" />
+        
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
+        >
+          <div className="space-y-8">
+            <motion.div variants={fadeIn} className="inline-flex items-center space-x-4">
+              <span className="w-12 h-px bg-primary" />
+              <span className="text-xs uppercase tracking-[0.4em] text-primary font-medium">Reflection</span>
             </motion.div>
-          ))}
-        </div>
+            
+            <motion.h2 
+              variants={slideUp}
+              className="text-4xl md:text-5xl font-extralight text-gray-900 leading-tight tracking-tight"
+            >
+              在生活的琐碎中<br />
+              <span className="italic font-serif">审视那些被忽视的裂痕</span>
+            </motion.h2>
+            
+            <motion.p variants={fadeIn} className="text-lg text-gray-400 font-light leading-relaxed max-w-md">
+              家务不应是感情的磨损石。我们为您捕捉那些微小的失衡，重新定义“家”的意义。
+            </motion.p>
+          </div>
+
+          <div className="space-y-16">
+            {thoughts.map((item, index) => (
+              <motion.div 
+                key={index}
+                variants={fadeIn}
+                className="group space-y-4"
+              >
+                <div className="flex items-center space-x-4">
+                  <span className="text-[10px] font-mono text-gray-300">0{index + 1}</span>
+                  <h4 className="text-sm uppercase tracking-[0.3em] text-gray-900 font-medium group-hover:text-primary transition-colors">
+                    {item.label}
+                  </h4>
+                </div>
+                <p className="text-xl font-extralight text-gray-500 leading-relaxed pl-10 border-l border-transparent group-hover:border-gray-100 transition-all duration-700">
+                  {item.content}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,97 +1,82 @@
 import { motion } from 'framer-motion';
-import { UserPlus, ListTodo, Gamepad2 } from 'lucide-react';
+import { fadeIn, slideUp, staggerContainer } from '../utils/animations';
 
 const HowItWorks = () => {
   const steps = [
     {
-      number: 1,
-      icon: UserPlus,
-      title: '创建家庭账户',
-      description: '邀请伴侣加入，建立你们的专属家务协作空间',
-      color: 'text-primary-500',
-      bgColor: 'bg-primary-50',
+      title: '同心共创',
+      description: '邀请您的伴侣，建立一个独属于你们两人的、基于信任与尊重的数字化空间。',
+      label: "Establish",
     },
     {
-      number: 2,
-      icon: ListTodo,
-      title: '发布愿望清单',
-      description: '各自添加本周想完成的家务任务，设置奖励和优先级',
-      color: 'text-secondary-500',
-      bgColor: 'bg-secondary-50',
+      title: '心之向往',
+      description: '将琐碎的任务转化为愿望，赋予家务新的情感价值。在这里，付出被看见。',
+      label: "Inspire",
     },
     {
-      number: 3,
-      icon: Gamepad2,
-      title: '开始游戏化协作',
-      description: '认领任务、赚取家务币、解锁奖励，让家务变得有趣',
-      color: 'text-green-500',
-      bgColor: 'bg-green-50',
+      title: '和谐共振',
+      description: '在协作中赚取代表爱的积存，让每一次家务劳动都成为增进感情的灵感。',
+      label: "Harmonize",
     },
   ];
 
   return (
-    <section id="how-it-works" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+    <section id="how-it-works" className="py-32 bg-gray-50/50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-end justify-between mb-24 gap-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            className="max-w-xl"
           >
-            三步开启和谐家务生活
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-600"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            <h2 className="text-4xl md:text-5xl font-extralight text-gray-900 tracking-tight leading-tight">
+              极简，<br />
+              <span className="italic font-serif">是秩序的开端</span>
+            </h2>
+          </motion.div>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[10px] tracking-[0.5em] text-gray-400 uppercase pb-2"
           >
-            简单易用，立即上手
+            A New Way of Living
           </motion.p>
         </div>
 
-        {/* Steps */}
-        <div className="relative">
-          {/* Connection Line */}
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-primary-200 via-secondary-200 to-green-200 transform -translate-y-1/2 z-0"></div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-            {steps.map((step, index) => (
-              <motion.div
-                key={index}
-                className="relative"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-              >
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border-2 border-gray-100">
-                  {/* Step Number */}
-                  <div className="flex justify-center mb-6">
-                    <div className={`w-20 h-20 ${step.bgColor} rounded-full flex items-center justify-center relative`}>
-                      <step.icon className={`w-10 h-10 ${step.color}`} />
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                        {step.number}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-          {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-center leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-gray-100 border border-gray-100"
+        >
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              variants={fadeIn}
+              className="bg-white p-12 space-y-8 group hover:bg-gray-50/50 transition-all duration-700"
+            >
+              <div className="space-y-4">
+                <span className="text-[10px] font-mono text-gray-300 block">
+                  CHAPTER 0{index + 1}
+                </span>
+                <h3 className="text-2xl font-light text-gray-900 group-hover:text-primary transition-colors">
+                  {step.title}
+                </h3>
+              </div>
+              <p className="text-sm font-light text-gray-500 leading-relaxed min-h-[4.5rem]">
+                {step.description}
+              </p>
+              <div className="pt-8">
+                <span className="text-[8px] tracking-[0.3em] uppercase text-gray-300 font-medium">
+                  {step.label}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

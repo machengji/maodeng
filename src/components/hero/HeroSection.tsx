@@ -1,147 +1,106 @@
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, Coins, ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Button, { MotionButton } from '../ui/Button';
 import { fadeIn, slideUp, staggerContainer } from '../../utils/animations';
-import Icon from '../ui/Icon';
 
 const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary-50 via-white to-secondary-50">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-[10%] left-[5%] text-primary/10"
-          animate={{ 
-            y: [0, -30, 0],
-            rotate: [0, 10, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Heart size={120} strokeWidth={1} />
-        </motion.div>
-        <motion.div
-          className="absolute top-[20%] right-[10%] text-secondary/10"
-          animate={{ 
-            y: [0, 40, 0],
-            rotate: [0, -15, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >
-          <Sparkles size={160} strokeWidth={1} />
-        </motion.div>
-        <motion.div
-          className="absolute bottom-[15%] left-[15%] text-accent/10"
-          animate={{ 
-            y: [0, -20, 0],
-            x: [0, 20, 0],
-          }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        >
-          <Coins size={100} strokeWidth={1} />
-        </motion.div>
-        
-        {/* Glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-200/20 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary-200/20 rounded-full blur-[100px]" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+      {/* Abstract Artistic Background */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+        <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+          <motion.path
+            d="M 0 500 Q 250 200 500 500 T 1000 500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+          />
+          <motion.circle
+            cx="200" cy="300" r="100"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            animate={{ scale: [1, 1.2, 1], x: [0, 50, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.path
+            d="M 800 200 L 900 400 L 700 400 Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
+        </svg>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 text-center">
         <motion.div
           variants={staggerContainer}
           initial="initial"
           animate="animate"
-          className="space-y-8"
+          className="space-y-12"
         >
-          {/* Badge */}
-          <motion.div variants={fadeIn} className="flex justify-center">
-            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-glass border border-white/50">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-primary-200 to-secondary-200" />
-                ))}
-              </div>
-              <span className="text-sm font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                1000+ 家庭的选择
+          {/* Minimalism Title */}
+          <div className="space-y-4">
+            <motion.p 
+              variants={fadeIn}
+              className="text-xs uppercase tracking-[0.3em] text-gray-400 font-light"
+            >
+              Art of Living Together
+            </motion.p>
+            <motion.h1 
+              variants={slideUp}
+              className="text-5xl md:text-7xl font-light text-gray-900 leading-tight tracking-tight"
+            >
+              让爱在秩序中
+              <span className="block italic font-serif text-primary mt-2">
+                自由呼吸
               </span>
-            </div>
-          </motion.div>
+            </motion.h1>
+          </div>
 
-          {/* Main Headline */}
-          <motion.h1 
-            variants={slideUp}
-            className="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight text-gray-900 leading-[1.1]"
-          >
-            让家务成为
-            <span className="relative inline-block ml-4">
-              <span className="relative z-10 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                爱的游戏
-              </span>
-              <motion.svg
-                viewBox="0 0 200 20"
-                className="absolute -bottom-2 left-0 w-full h-4 text-primary/20 -z-0"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-              >
-                <path d="M0,10 Q50,0 100,10 T200,10" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
-              </motion.svg>
-            </span>
-          </motion.h1>
-
-          {/* Subheadline */}
           <motion.p 
             variants={slideUp}
-            className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light"
           >
-            用游戏化和情绪智能重建家庭和谐，让每一次家务协作都成为增进感情的机会。
+            去繁就简。用最纯粹的方式，管理家庭的每一份付出与感动。
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* Minimalist CTA */}
           <motion.div 
             variants={slideUp}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-8"
           >
             <MotionButton 
+              variant="primary"
               size="lg" 
-              className="w-full sm:w-auto group shadow-primary/20"
+              className="rounded-none px-12 py-6 bg-gray-900 hover:bg-primary transition-colors duration-500"
               onClick={() => navigate('/app/tasks')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              立刻开始
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              开始探索
             </MotionButton>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="w-full sm:w-auto bg-white/50 backdrop-blur-sm group"
+            <button 
+              className="group flex items-center space-x-2 text-sm tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
             >
-              <Play className="mr-2 w-5 h-5 fill-current group-hover:scale-110 transition-transform" />
-              观看演示
-            </Button>
+              <span>了解哲学</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </motion.div>
 
-          {/* Featured In / Social Proof */}
-          <motion.div
+          {/* Decorative Divider */}
+          <motion.div 
             variants={fadeIn}
-            className="mt-20 pt-10 border-t border-gray-100"
+            className="pt-24"
           >
-            <p className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-8">
-              深受现代家庭喜爱
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-              {/* Replace with actual logos if available */}
-              <div className="text-2xl font-bold italic">HarmonyPlus</div>
-              <div className="text-2xl font-bold italic">CoupleCare</div>
-              <div className="text-2xl font-bold italic">FamilyFirst</div>
-              <div className="text-2xl font-bold italic">LifeBalance</div>
-            </div>
+            <div className="w-px h-24 bg-gradient-to-b from-gray-200 to-transparent mx-auto" />
           </motion.div>
         </motion.div>
       </div>
