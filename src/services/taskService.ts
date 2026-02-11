@@ -67,7 +67,7 @@ export const loadTasks = async (): Promise<Task[]> => {
         const results = await query.find();
 
         return results.map(item => ({
-            id: item.id,
+            id: item.id || '',
             title: item.get('title'),
             time: item.get('time'),
             coins: item.get('coins'),

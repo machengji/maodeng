@@ -30,7 +30,7 @@ export const saveRating = async (rating: Omit<Rating, 'id'>, pairId?: string): P
 
         const saved = await avRating.save();
         console.log('评价保存成功');
-        return saved.id;
+        return saved.id || null;
     } catch (error) {
         console.error('评价保存失败:', error);
         return null;
@@ -56,7 +56,7 @@ export const loadRatings = async (limit = 50): Promise<Rating[]> => {
         const results = await query.find();
 
         return results.map(item => ({
-            id: item.id,
+            id: item.id || '',
             taskTitle: item.get('taskTitle'),
             taskId: item.get('taskId'),
             date: item.get('date'),

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { fadeIn, slideUp, staggerContainer } from '../utils/animations';
+import { fadeIn, staggerContainer } from '../utils/animations';
 
 const HowItWorks = () => {
   const steps = [

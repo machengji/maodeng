@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coins, Clock, Plus, Check } from 'lucide-react';
-import Card, { MotionCard } from '../components/ui/Card';
-import Button, { MotionButton } from '../components/ui/Button';
+import { Coins, Clock, Plus } from 'lucide-react';
+import { MotionCard } from '../components/ui/Card';
+import { MotionButton } from '../components/ui/Button';
 import PageContainer from '../components/layout/PageContainer';
 import { staggerContainer, fadeIn } from '../utils/animations';
 
@@ -19,8 +19,7 @@ interface Task {
 }
 
 const TasksPage = () => {
-  const [currentUser] = useState('我');
-  const [tasks, setTasks] = useState<Task[]>([
+  const [tasks] = useState<Task[]>([
     {
       id: 1,
       title: '清晨的厨房整理',

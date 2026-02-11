@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Button, { MotionButton } from '../ui/Button';
+import { MotionButton } from '../ui/Button';
 import { fadeIn, slideUp, staggerContainer } from '../../utils/animations';
 
 const HeroSection = () => {

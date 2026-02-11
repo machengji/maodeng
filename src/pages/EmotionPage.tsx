@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Gift, Clock, Calendar } from 'lucide-react';
+import { Star, Gift, Calendar } from 'lucide-react';
 import Card, { MotionCard } from '../components/ui/Card';
-import Button, { MotionButton } from '../components/ui/Button';
+import { MotionButton } from '../components/ui/Button';
 import PageContainer from '../components/layout/PageContainer';
 import { staggerContainer, fadeIn, scaleIn } from '../utils/animations';
 
@@ -17,7 +17,6 @@ interface Rating {
 }
 
 const EmotionPage = () => {
-  const [showRatingModal, setShowRatingModal] = useState(false);
   const [consecutiveDays] = useState(2);
   const [vouchers] = useState(1);
 
@@ -64,7 +63,7 @@ const EmotionPage = () => {
           variant="outline"
           size="sm"
           className="rounded-full px-6"
-          onClick={() => setShowRatingModal(true)}
+          onClick={() => {}}
         >
           <Star className="w-3 h-3 mr-2" />
           给予评价

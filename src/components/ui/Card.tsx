@@ -1,10 +1,11 @@
-import { HTMLAttributes, forwardRef } from 'react';
+import { forwardRef } from 'react';
+import type { HTMLAttributes } from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'flat' | 'outlined';
+  variant?: 'default' | 'flat' | 'outlined' | 'elevated';
   padding?: 'none' | 'sm' | 'md' | 'lg';
 }
 
@@ -16,6 +17,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       default: 'border border-gray-100 shadow-subtle hover:shadow-art',
       flat: 'bg-gray-50/50',
       outlined: 'border border-gray-100',
+      elevated: 'shadow-lg hover:shadow-xl',
     };
 
     const paddings = {

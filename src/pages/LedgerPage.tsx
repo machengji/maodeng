@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { Heart, Calendar } from 'lucide-react';
-import Card, { MotionCard } from '../components/ui/Card';
-import Button, { MotionButton } from '../components/ui/Button';
+import { MotionCard } from '../components/ui/Card';
+import { MotionButton } from '../components/ui/Button';
 import PageContainer from '../components/layout/PageContainer';
 import { staggerContainer, fadeIn, scaleIn } from '../utils/animations';
 

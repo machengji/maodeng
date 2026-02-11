@@ -28,7 +28,7 @@ export const saveChoreRecord = async (record: Omit<ChoreRecord, 'id'>, pairId?: 
 
         const saved = await avRecord.save();
         console.log('家务记录保存成功');
-        return saved.id;
+        return saved.id || null;
     } catch (error) {
         console.error('家务记录保存失败:', error);
         return null;
@@ -54,7 +54,7 @@ export const loadChoreRecords = async (limit = 100): Promise<ChoreRecord[]> => {
         const results = await query.find();
 
         return results.map(item => ({
-            id: item.id,
+            id: item.id || '',
             person: item.get('person'),
             task: item.get('task'),
             duration: item.get('duration'),

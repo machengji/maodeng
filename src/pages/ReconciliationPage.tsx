@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Sparkles, CheckCircle2 } from 'lucide-react';
-import Card, { MotionCard } from '../components/ui/Card';
+import { Heart, Sparkles } from 'lucide-react';
+import Card from '../components/ui/Card';
 import Button, { MotionButton } from '../components/ui/Button';
 import PageContainer from '../components/layout/PageContainer';
 import { staggerContainer, fadeIn, slideUp } from '../utils/animations';

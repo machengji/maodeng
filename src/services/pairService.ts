@@ -27,11 +27,11 @@ export const createPair = async (userName: string): Promise<{ pairCode: string; 
     const savedUserConfig = await userConfig.save();
 
     // 保存到本地
-    localStorage.setItem('userId', savedUserConfig.id);
+    localStorage.setItem('userId', savedUserConfig.id || '');
     localStorage.setItem('userName', userName);
     localStorage.setItem('pairCode', pairCode);
 
-    return { pairCode, userId: savedUserConfig.id };
+    return { pairCode, userId: savedUserConfig.id || '' };
   } catch (error) {
     console.error('创建配对失败:', error);
     return null;
@@ -59,11 +59,11 @@ export const joinPair = async (pairCode: string, userName: string): Promise<stri
     const savedUserConfig = await userConfig.save();
 
     // 保存到本地
-    localStorage.setItem('userId', savedUserConfig.id);
+    localStorage.setItem('userId', savedUserConfig.id || '');
     localStorage.setItem('userName', userName);
     localStorage.setItem('pairCode', pairCode);
 
-    return savedUserConfig.id;
+    return savedUserConfig.id || null;
   } catch (error) {
     console.error('加入配对失败:', error);
     return null;
